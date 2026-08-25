@@ -28,8 +28,21 @@ import 'package:stardrop/widgets/take_card_widget.dart';
 // These come out at the simulator's own resolution, which App Store Connect
 // will not necessarily accept — a modern iPhone gives 2796x1290 and the upload
 // is rejected with only 'the dimensions of one or more screenshots are wrong'.
-// Use an iPhone 11 Pro Max / XS Max class simulator, which is natively
-// 2688x1242 in landscape, or resize afterwards:
+// So the device type matters more than the iOS version. An iPhone 11 Pro Max
+// or XS Max is natively 2688x1242 in landscape, which is a size the 6.5" slot
+// takes as-is:
+//
+//   xcrun simctl create "Stardrops Shots" \
+//     com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max \
+//     com.apple.CoreSimulator.SimRuntime.iOS-26-5
+//
+// Substitute whatever runtime is installed — `xcrun simctl list runtimes`.
+// The name is only a label; `flutter drive -d` takes it or the UDID the create
+// command prints. Delete it again with `xcrun simctl delete "Stardrops Shots"`.
+//
+// If you capture on a different device anyway, resize before framing —
+// tool/store_shots.py checks the width and refuses a capture it does not
+// expect, rather than framing a slice of the wrong picture:
 //
 //   cd screenshots/iphone-6.5 && for f in *.png; do sips -z 1242 2688 "$f"; done
 void main() {
