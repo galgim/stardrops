@@ -1,0 +1,16 @@
+# Configures Flutter's built-in string generator. It reads every app_*.arb
+# under lib/l10n and writes app_localizations*.dart alongside them before each
+# build.
+#
+# The .arb files are the source of truth; the .dart files next to them are
+# generated output. Edit the .arb, never the .dart — a hand edit is silently
+# overwritten by the next build. `flutter gen-l10n` regenerates by hand if a
+# build ever seems to be holding a stale copy.
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+
+# Any key missing from a translation is listed here and falls back to English
+# at runtime, so a half-finished translation still gives a usable app. An empty
+# {} means every language is complete.
+untranslated-messages-file: l10n_missing.txt

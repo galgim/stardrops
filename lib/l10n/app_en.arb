@@ -1,0 +1,188 @@
+{
+  "@@locale": "en",
+
+  "languageName": "English",
+  "@languageName": {
+    "description": "This language's own name, shown in the language picker. Always written in the language itself, never translated into the current one — a Spanish speaker looks for 'Espanol', not 'Spanish'."
+  },
+
+  "menuTagline": "Fewest stars wins.",
+  "menuPlay": "PLAY",
+  "menuLocalGame": "LOCAL GAME",
+  "menuHowToPlay": "HOW TO PLAY",
+  "menuSettings": "SETTINGS",
+  "menuProfileLabel": "Profile",
+  "@menuProfileLabel": {
+    "description": "Screen-reader label for the round profile button. Never drawn on screen."
+  },
+
+  "settingsTitle": "SETTINGS",
+  "settingsDone": "DONE",
+  "settingsLanguage": "LANGUAGE",
+  "soundOn": "SOUND ON",
+  "soundOff": "SOUND OFF",
+
+  "languageTitle": "LANGUAGE",
+
+  "difficultyTitle": "DIFFICULTY",
+  "difficultyEasy": "EASY",
+  "difficultyNormal": "NORMAL",
+  "difficultyHard": "HARD",
+
+  "profileTitle": "PROFILE",
+  "profileYourName": "YOUR NAME",
+  "profileRecord": "{played} PLAYED",
+  "@profileRecord": {
+    "description": "Lifetime games played, above the per-difficulty table on the profile dialog.",
+    "placeholders": {
+      "played": { "type": "int" }
+    }
+  },
+  "profileWon": "WON",
+  "@profileWon": {
+    "description": "Column heading over the win counts in the profile dialog's table."
+  },
+  "profileLost": "LOST",
+  "@profileLost": {
+    "description": "Column heading over the loss counts in the profile dialog's table."
+  },
+
+  "gameMenu": "MENU",
+  "gameMenuLabel": "Menu",
+  "@gameMenuLabel": {
+    "description": "Screen-reader label for the in-game menu button. Never drawn on screen."
+  },
+  "gameAbandon": "ABANDON GAME",
+  "gameResume": "RESUME",
+  "gameConfirm": "CONFIRM",
+  "gameSelect": "SELECT",
+  "gameOver": "GAME OVER",
+  "gameHostLeft": "The host left, so the game ended.",
+  "gamePlayerLeft": "{name} left. The table plays on without them.",
+  "@gamePlayerLeft": {
+    "description": "Snackbar shown to the host when a player's phone drops out mid-game.",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "gameWaitingForPlayers": "{count, plural, =1{Waiting for 1 player} other{Waiting for {count} players}}",
+  "@gameWaitingForPlayers": {
+    "description": "Shown in place of the confirm button while the table is short of somebody.",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "gameTakingRow": "{name} is taking a row",
+  "@gameTakingRow": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "gameSomeone": "Someone",
+  "@gameSomeone": {
+    "description": "Stands in for a player's name when the seat can't be identified."
+  },
+  "gameAiName": "AI {number}",
+  "@gameAiName": {
+    "description": "Name given to each computer seat in a solo game.",
+    "placeholders": {
+      "number": { "type": "int" }
+    }
+  },
+
+  "resultsYouWin": "YOU WIN!",
+  "resultsYouTie": "YOU TIE\nFOR 1ST!",
+  "resultsWinner": "{name}\nWINS!",
+  "@resultsWinner": {
+    "description": "Headline when somebody else won. The line break is deliberate.",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "resultsStandings": "FINAL STANDINGS",
+  "resultsPlayAgain": "PLAY AGAIN",
+
+  "localGameTitle": "LOCAL GAME",
+  "localGameSameWifi": "Everyone needs to be on the same WiFi.",
+  "localGameHost": "HOST",
+  "localGameJoin": "JOIN",
+  "joinGameTitle": "JOIN GAME",
+  "joinEnterCode": "ENTER THE CODE",
+  "joinBadCode": "That code doesn't look right.",
+
+  "lobbyJoining": "JOINING",
+  "lobbyOpening": "Opening the table…",
+  "lobbyConnecting": "Connecting…",
+  "lobbyShareCode": "Others join with this code, on the same WiFi.",
+  "lobbyTapToCopy": "TAP TO COPY",
+  "lobbyCodeCopied": "Code copied",
+  "lobbyWaitingForHost": "Waiting for the host to start.",
+  "lobbyStart": "START",
+  "lobbyLeave": "LEAVE",
+  "lobbyPlayerCount": "PLAYERS  {count}/{max}",
+  "@lobbyPlayerCount": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+  "lobbyNeedMore": "Need {count} to start",
+  "@lobbyNeedMore": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "netNoWifi": "No WiFi network. Connect to WiFi and try again.",
+  "netNoAddress": "Couldn't read this device's network address.",
+  "netDropped": "The connection dropped.",
+  "netCantHost": "Couldn't open the game to other players.",
+  "netNoGameFound": "No game found with that code. Check it and that both phones are on the same WiFi.",
+  "netCantJoin": "Couldn't join that game.",
+  "netTableFull": "That game is full or already started.",
+  "netHostLeft": "The host left the game.",
+
+  "introSkip": "Skip  ›",
+  "introClose": "Close  ›",
+  "introNext": "NEXT",
+  "introDone": "DONE",
+
+  "introCardsEyebrow": "THE CARDS",
+  "introCardsTitle": "You get\n10 cards",
+  "introCardsBody": "Every card has a number and some *stars*. Those stars are *penalty points* — collect as few as you can.",
+  "introCardsNumberRange": "NUMBER 1 – 104",
+  "introCardsPenaltyStars": "PENALTY STARS",
+
+  "introTableEyebrow": "THE TABLE",
+  "introTableTitle": "Five cards\nper row",
+  "introTableBody": "Four rows sit in the middle. Each one starts with a random card and holds 5 cards in total.",
+  "introTableCaption": "STARTS WITH 1  ·  HOLDS 5",
+
+  "introRoundEyebrow": "EACH ROUND",
+  "introRoundTitle": "Everyone plays\none card",
+  "introRoundBody": "Each round, everyone picks one card and plays it at the same time. The lowest number lands first. A card joins the row that ends closest below it.",
+  "introRoundCaption": "PLAYED THIS ROUND",
+
+  "introSixthEyebrow": "PENALTY 1 OF 2",
+  "introSixthTitle": "Sixth card\ntakes the row",
+  "introSixthBody": "A row stops at 5 cards. Play the 6th and you take all 5 — their *stars* become your *penalty points*.",
+  "introTakeBadge": "You take all {count}",
+  "@introTakeBadge": {
+    "description": "On the two take-a-row slides: how many cards the row costs you. Wrap words in *asterisks* anywhere in an intro body to paint them the accent yellow.",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "introTooLowEyebrow": "PENALTY 2 OF 2",
+  "introTooLowTitle": "Lower than\nevery row",
+  "introTooLowBody": "A card lower than every row fits nowhere. Pick any row, take its *stars*, and your card starts that row again.",
+
+  "introWinnerEyebrow": "AFTER 10 ROUNDS",
+  "introWinnerTitle": "Fewest stars\nwins",
+  "introWinnerBody": "After 10 rounds every hand is empty. Count the *stars*. Fewest wins.",
+  "introWinnerYou": "You",
+  "@introWinnerYou": {
+    "description": "The player's own line on the example scoreboard in the last tutorial slide."
+  }
+}
