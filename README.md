@@ -63,4 +63,4 @@ nothing leaves the local network. See [privacy.md](privacy.md).
 
 ## Support
 
-[support.md](support.md) — or email claeekim@gmail.com.
+[support.md](support.md) — or email claytonetwork@gmail.com.

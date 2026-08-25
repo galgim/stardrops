@@ -9,7 +9,7 @@ permalink: /support/
 A card game about avoiding stars. Play a card, watch four rows fill, and try
 not to be the one who has to pick one up.
 
-**Contact: claeekim@gmail.com** — questions, bugs, and suggestions all welcome.
+**Contact: claytonetwork@gmail.com** — questions, bugs, and suggestions all welcome.
 Please include your device model and iOS version if you are reporting a bug.
 
 ## How to play

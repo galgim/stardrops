@@ -17,4 +17,4 @@ involved.
 - [Support & how to play]({{ "/support/" | relative_url }})
 - [Privacy policy]({{ "/privacy/" | relative_url }})
 
-Contact: **claeekim@gmail.com**
+Contact: **claytonetwork@gmail.com**

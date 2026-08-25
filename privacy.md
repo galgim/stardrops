@@ -51,4 +51,4 @@ with a new date at the top.
 
 ## Contact
 
-Questions about this policy: **claeekim@gmail.com**
+Questions about this policy: **claytonetwork@gmail.com**
