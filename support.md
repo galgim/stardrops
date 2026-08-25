@@ -1,3 +1,9 @@
+---
+layout: default
+title: Support
+permalink: /support/
+---
+
 # Stardrops — Support
 
 A card game about avoiding stars. Play a card, watch four rows fill, and try
@@ -59,4 +65,4 @@ backed up to any server.
 
 ## Privacy
 
-Stardrops collects no data. See the [privacy policy](privacy.md).
+Stardrops collects no data. See the [privacy policy]({{ "/privacy/" | relative_url }}).

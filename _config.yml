@@ -1,0 +1,28 @@
+title: Stardrops
+description: A card game about avoiding stars — for iOS and Android.
+theme: minima
+url: "https://galgim.github.io"
+baseurl: "/stardrops"
+
+# This repo is primarily the Flutter app. Only the three site pages
+# (index/privacy/support) are published; everything else is excluded so
+# Jekyll never tries to process app source or copy large assets.
+exclude:
+  - README.md
+  - analysis_options.yaml
+  - l10n.yaml
+  - pubspec.yaml
+  - pubspec.lock
+  - android/
+  - assets/
+  - integration_test/
+  - ios/
+  - lib/
+  - linux/
+  - macos/
+  - screenshots/
+  - test/
+  - test_driver/
+  - tool/
+  - web/
+  - windows/
