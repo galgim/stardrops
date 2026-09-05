@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
 import '../services/profile_service.dart';
+import '../services/purchase_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_metrics.dart';
 import '../theme/app_text.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_icon_button.dart';
 import '../widgets/difficulty_dialog.dart';
+import '../widgets/host_unlock_dialog.dart';
 import '../widgets/local_game_dialog.dart';
 import '../widgets/profile_dialog.dart';
 import '../widgets/settings_dialog.dart';
@@ -74,9 +76,19 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   /// Hosts or joins a game on the local network.
+  ///
+  /// Hosting is the paid half; joining is free and never meets the paywall.
+  /// The gate sits here because this is the only route to [LobbyScreen].
   Future<void> _localGame() async {
     final result = await showLocalGameDialog(context);
     if (!mounted || result == null) return;
+
+    if (result.choice == LocalGameChoice.host &&
+        !PurchaseService.instance.canHost) {
+      final unlocked = await showHostUnlockDialog(context);
+      if (!mounted || unlocked != true) return;
+    }
+
     await Navigator.push(
       context,
       MaterialPageRoute(

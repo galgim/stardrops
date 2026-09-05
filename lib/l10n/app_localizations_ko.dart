@@ -167,6 +167,39 @@ class AppLocalizationsKo extends AppLocalizations {
   String get joinBadCode => '코드가 올바르지 않습니다.';
 
   @override
+  String get purchaseTitle => '방 만들기';
+
+  @override
+  String get purchaseBody =>
+      '방 만들기는 한 번만 결제하면 계속 사용할 수 있습니다. 다른 사람의 방에 참가하는 것은 언제나 무료입니다.';
+
+  @override
+  String get purchaseBuy => '잠금 해제';
+
+  @override
+  String purchaseBuyAt(String price) {
+    return '$price 잠금 해제';
+  }
+
+  @override
+  String get purchaseRestore => '구매 복원';
+
+  @override
+  String get purchaseNotNow => '나중에';
+
+  @override
+  String get purchaseStoreUnavailable => '지금은 스토어에 연결할 수 없습니다.';
+
+  @override
+  String get purchaseUnavailable => '지금은 구매할 수 없습니다.';
+
+  @override
+  String get purchaseFailed => '결제가 완료되지 않았습니다. 요금은 청구되지 않았습니다.';
+
+  @override
+  String get purchaseNothingToRestore => '이 계정에는 복원할 구매 내역이 없습니다.';
+
+  @override
   String get lobbyJoining => '참가 중';
 
   @override

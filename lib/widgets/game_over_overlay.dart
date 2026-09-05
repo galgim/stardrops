@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../logic/ai_strategy.dart';
 import '../models/take_player.dart';
+import '../services/stats_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_metrics.dart';
 import '../theme/app_text.dart';
 import 'app_button.dart';
+import 'difficulty_dialog.dart';
 import 'star_count.dart';
 
 /// End-of-game results: the outcome and actions on the left, a ranked
@@ -19,6 +22,11 @@ class GameOverOverlay extends StatelessWidget {
   final bool localWon; // true if this device's player holds or shares the lead
   final bool isTie; // true if more than one player shares the winning score
   final int localSeat; // which of the standings rows is you
+
+  /// The lifetime record at the difficulty just played, already counting this
+  /// game. Null in a networked game, where results aren't filed by difficulty.
+  final ({AiLevel level, LevelRecord record})? record;
+
   final VoidCallback onPlayAgain;
   final VoidCallback onMenu;
 
@@ -28,6 +36,7 @@ class GameOverOverlay extends StatelessWidget {
     required this.localWon,
     required this.isTie,
     required this.localSeat,
+    required this.record,
     required this.onPlayAgain,
     required this.onMenu,
   });
@@ -59,6 +68,7 @@ class GameOverOverlay extends StatelessWidget {
                         winner: winner,
                         localWon: localWon,
                         isTie: isTie,
+                        record: record,
                         onPlayAgain: onPlayAgain,
                         onMenu: onMenu,
                       ),
@@ -86,9 +96,20 @@ class GameOverOverlay extends StatelessWidget {
 
 /// Left column: the headline and the two actions.
 class _Outcome extends StatelessWidget {
+  /// Empty space held below the buttons, which lifts this column without
+  /// moving the standings beside it.
+  ///
+  /// The two columns are one block, centred as a unit, so nothing can raise
+  /// the headline on its own. Growing this column at the bottom grows the
+  /// block, and a centred block that grows by 50 rises by 25 — carrying the
+  /// headline and buttons up with it while the standings, centred in that
+  /// same block, stay exactly on the middle of the screen.
+  static const _lift = 50.0;
+
   final TakePlayer winner;
   final bool localWon;
   final bool isTie;
+  final ({AiLevel level, LevelRecord record})? record;
   final VoidCallback onPlayAgain;
   final VoidCallback onMenu;
 
@@ -96,6 +117,7 @@ class _Outcome extends StatelessWidget {
     required this.winner,
     required this.localWon,
     required this.isTie,
+    required this.record,
     required this.onPlayAgain,
     required this.onMenu,
   });
@@ -118,10 +140,25 @@ class _Outcome extends StatelessWidget {
             color: localWon ? AppColors.accent : AppColors.textPrimary,
           ),
         ),
+        // Held equally off the headline above and the buttons below: the same
+        // minimum gap either side, and an equal share of whatever room is
+        // left. It sits in space the Spacer was already holding empty, so the
+        // record costs the composition nothing.
+        if (record != null) ...[
+          const SizedBox(height: AppSpacing.md),
+          const Spacer(),
+          _RecordLine(
+            level: record!.level,
+            record: record!.record,
+            won: localWon,
+          ),
+          const SizedBox(height: AppSpacing.md),
+        ],
         const Spacer(),
         AppButton.primary(label: l10n.resultsPlayAgain, onTap: onPlayAgain),
         const SizedBox(height: AppSpacing.md),
         AppButton.ghost(label: l10n.gameMenu, onTap: onMenu),
+        const SizedBox(height: _lift),
       ],
     );
   }
@@ -138,6 +175,10 @@ class _Leaderboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      // Centred in the column rather than hanging from its top: the outcome
+      // beside it is anchored at both ends by the headline and the buttons,
+      // and a short list top-aligned against that reads as having slipped.
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(AppLocalizations.of(context)!.resultsStandings,
@@ -217,6 +258,62 @@ class _LeaderboardRow extends StatelessWidget {
           style: AppText.statLarge,
           iconSize: 13,
         ),
+      ],
+    );
+  }
+}
+
+/// The lifetime record at the difficulty just played: the level, then wins and
+/// losses. The number this game moved is drawn in accent and the other stays
+/// faint, because a counter the player doesn't see change is no reason to
+/// start another game.
+class _RecordLine extends StatelessWidget {
+  final AiLevel level;
+  final LevelRecord record;
+  final bool won;
+
+  const _RecordLine({
+    required this.level,
+    required this.record,
+    required this.won,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    // The words run long in translation — WON/LOST become GANADAS/PERDIDAS —
+    // and this column can't grow, so the line shrinks rather than overflowing.
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            difficultyLabel(context, level),
+            style: AppText.label.copyWith(color: AppColors.textFaint),
+          ),
+          const SizedBox(width: AppSpacing.lg),
+          _count(record.wins, l10n.profileWon, won),
+          const SizedBox(width: AppSpacing.lg),
+          _count(record.losses, l10n.profileLost, !won),
+        ],
+      ),
+    );
+  }
+
+  /// One count and its word, accent when this is the number that just moved.
+  static Widget _count(int value, String label, bool changed) {
+    final color = changed ? AppColors.accent : AppColors.textFaint;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        Text('$value', style: AppText.statLarge.copyWith(color: color)),
+        const SizedBox(width: AppSpacing.xs),
+        Text(label, style: AppText.caption.copyWith(color: color)),
       ],
     );
   }

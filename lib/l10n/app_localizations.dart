@@ -382,6 +382,66 @@ abstract class AppLocalizations {
   /// **'That code doesn\'t look right.'**
   String get joinBadCode;
 
+  /// No description provided for @purchaseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'HOST A GAME'**
+  String get purchaseTitle;
+
+  /// No description provided for @purchaseBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Hosting is a one-time unlock. Joining a game someone else hosts is always free.'**
+  String get purchaseBody;
+
+  /// No description provided for @purchaseBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'UNLOCK'**
+  String get purchaseBuy;
+
+  /// Buy button with the store's own localised price, e.g. UNLOCK $1.99. Never build the price from a number — the store knows the player's currency.
+  ///
+  /// In en, this message translates to:
+  /// **'UNLOCK {price}'**
+  String purchaseBuyAt(String price);
+
+  /// No description provided for @purchaseRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'RESTORE'**
+  String get purchaseRestore;
+
+  /// No description provided for @purchaseNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'NOT NOW'**
+  String get purchaseNotNow;
+
+  /// No description provided for @purchaseStoreUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t reach the store right now.'**
+  String get purchaseStoreUnavailable;
+
+  /// No description provided for @purchaseUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This unlock isn\'t available right now.'**
+  String get purchaseUnavailable;
+
+  /// No description provided for @purchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'That didn\'t go through. You haven\'t been charged.'**
+  String get purchaseFailed;
+
+  /// No description provided for @purchaseNothingToRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to restore on this account.'**
+  String get purchaseNothingToRestore;
+
   /// No description provided for @lobbyJoining.
   ///
   /// In en, this message translates to:

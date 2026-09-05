@@ -110,6 +110,23 @@
   "joinEnterCode": "ENTER THE CODE",
   "joinBadCode": "That code doesn't look right.",
 
+  "purchaseTitle": "HOST A GAME",
+  "purchaseBody": "Hosting is a one-time unlock. Joining a game someone else hosts is always free.",
+  "purchaseBuy": "UNLOCK",
+  "purchaseBuyAt": "UNLOCK {price}",
+  "@purchaseBuyAt": {
+    "description": "Buy button with the store's own localised price, e.g. UNLOCK $1.99. Never build the price from a number — the store knows the player's currency.",
+    "placeholders": {
+      "price": { "type": "String" }
+    }
+  },
+  "purchaseRestore": "RESTORE",
+  "purchaseNotNow": "NOT NOW",
+  "purchaseStoreUnavailable": "Can't reach the store right now.",
+  "purchaseUnavailable": "This unlock isn't available right now.",
+  "purchaseFailed": "That didn't go through. You haven't been charged.",
+  "purchaseNothingToRestore": "Nothing to restore on this account.",
+
   "lobbyJoining": "JOINING",
   "lobbyOpening": "Opening the table…",
   "lobbyConnecting": "Connecting…",

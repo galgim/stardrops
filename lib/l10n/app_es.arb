@@ -57,6 +57,17 @@
   "joinEnterCode": "ESCRIBE EL CÓDIGO",
   "joinBadCode": "Ese código no parece correcto.",
 
+  "purchaseTitle": "CREAR PARTIDA",
+  "purchaseBody": "Crear partidas se desbloquea una sola vez. Unirse a la partida de otra persona siempre es gratis.",
+  "purchaseBuy": "DESBLOQUEAR",
+  "purchaseBuyAt": "DESBLOQUEAR {price}",
+  "purchaseRestore": "RESTAURAR",
+  "purchaseNotNow": "AHORA NO",
+  "purchaseStoreUnavailable": "No se puede conectar con la tienda ahora mismo.",
+  "purchaseUnavailable": "Esta compra no está disponible ahora mismo.",
+  "purchaseFailed": "No se completó. No se te ha cobrado nada.",
+  "purchaseNothingToRestore": "No hay nada que restaurar en esta cuenta.",
+
   "lobbyJoining": "UNIÉNDOSE",
   "lobbyOpening": "Abriendo la mesa…",
   "lobbyConnecting": "Conectando…",

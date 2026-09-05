@@ -125,11 +125,14 @@ class _LocalGameDialogState extends State<_LocalGameDialog> {
             onChanged: (_) {
               if (_badCode) setState(() => _badCode = false);
             },
-            // The code is base 36, and it's shown grouped with dashes — so
-            // dashes are allowed in and stripped by the decoder.
+            // Shown exactly as it's typed, so nothing but code characters get
+            // into the field. Letters the alphabet leaves out are still
+            // allowed in — the decoder reads I and L as 1 and O as 0, which is
+            // the whole point of leaving them out — as is punctuation from a
+            // pasted code, which it strips.
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp('[0-9A-Za-z-]')),
-              LengthLimitingTextInputFormatter(JoinCode.length + 2),
+              FilteringTextInputFormatter.allow(RegExp('[0-9A-Za-z]')),
+              LengthLimitingTextInputFormatter(JoinCode.maxLength),
             ],
             cursorColor: AppColors.accent,
             style: AppText.display.copyWith(letterSpacing: 3),

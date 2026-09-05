@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../l10n/app_localizations.dart';
-import '../net/join_code.dart';
 import '../net/lan_session.dart';
 import '../services/profile_service.dart';
 import '../theme/app_colors.dart';
@@ -372,12 +371,11 @@ class _LeftColumn extends StatelessWidget {
             style: AppText.body,
           ),
           const SizedBox(height: AppSpacing.lg),
-          // Tappable: reading seven characters out loud is worse than sending
-          // them.
+          // Tappable: sending the code beats reading it out, even a short one.
           GestureDetector(
             onTap: onCopy,
             child: Text(
-              JoinCode.format(code!),
+              code!,
               style: AppText.hero.copyWith(color: AppColors.accent),
             ),
           ),

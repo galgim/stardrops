@@ -1,11 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:in_app_purchase_platform_interface/in_app_purchase_platform_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stardrop/l10n/app_localizations.dart';
+import 'package:stardrop/logic/ai_strategy.dart';
+import 'package:stardrop/models/take_player.dart';
 import 'package:stardrop/services/profile_service.dart';
+import 'package:stardrop/services/purchase_service.dart';
+import 'package:stardrop/services/stats_service.dart';
+import 'package:stardrop/widgets/app_button.dart';
+import 'package:stardrop/widgets/game_over_overlay.dart';
 import 'package:stardrop/screens/game_screen.dart';
 import 'package:stardrop/screens/intro_screen.dart';
 import 'package:stardrop/screens/menu_screen.dart';
+import 'package:stardrop/screens/lobby_screen.dart';
 
 /// Wraps a screen the way main.dart does, so AppLocalizations.of() resolves.
 /// Without the delegates every localised string throws on the null check, and
@@ -548,4 +557,198 @@ void main() {
       expect(find.text('한국어'), findsOneWidget);
     });
   });
+
+  // The record on the results screen only does its job if it shows the game
+  // just finished already counted, and only exists at all when there is a
+  // difficulty to file that game under. A LAN game has none, so the line has
+  // to be absent rather than showing a zero that isn't true.
+  group('the results record', () {
+    Widget overlay({({AiLevel level, LevelRecord record})? record}) => app(
+      Scaffold(
+        body: GameOverOverlay(
+          players: [
+            TakePlayer(seat: 0, name: 'You', isAi: false, totalStars: 12),
+            TakePlayer(seat: 1, name: 'AI 2', isAi: true, totalStars: 28),
+          ],
+          localWon: true,
+          isTie: false,
+          localSeat: 0,
+          record: record,
+          onPlayAgain: () {},
+          onMenu: () {},
+        ),
+      ),
+    );
+
+    testWidgets('is hidden in a networked game', (tester) async {
+      await tester.pumpWidget(overlay());
+      await tester.pump();
+
+      expect(find.text('WON'), findsNothing);
+      expect(find.text('NORMAL'), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+
+    // Asked for explicitly: the record sits the same distance off the
+    // headline above it as off the PLAY AGAIN button below. Both gaps are a
+    // fixed minimum plus an equal share of the leftover room, so they have to
+    // stay equal whether the column is crowded or roomy.
+    testWidgets('sits equally between the headline and the buttons', (
+      tester,
+    ) async {
+      for (final s in [const Size(844, 390), const Size(667, 375)]) {
+        tester.view.physicalSize = s;
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.reset);
+
+        await tester.pumpWidget(
+          overlay(
+            record: (
+              level: AiLevel.normal,
+              record: (played: 18, wins: 13, losses: 5),
+            ),
+          ),
+        );
+        await tester.pump();
+
+        final headline = tester.getRect(find.text('YOU WIN!'));
+        // The line's own box, not the word inside it — the level label is
+        // shorter than the counts beside it.
+        final line = tester.getRect(
+          find
+              .ancestor(
+                of: find.text('NORMAL'),
+                matching: find.byType(FittedBox),
+              )
+              .first,
+        );
+        // Likewise the button, not its label: the label is inset by the
+        // button's own padding, which would read as a gap that isn't there.
+        final button = tester.getRect(
+          find
+              .ancestor(
+                of: find.text('PLAY AGAIN'),
+                matching: find.byType(AppButton),
+              )
+              .first,
+        );
+
+        expect(
+          line.top - headline.bottom,
+          moreOrLessEquals(button.top - line.bottom, epsilon: 0.5),
+          reason: 'uneven at $s',
+        );
+      }
+    });
+
+    testWidgets('shows the level, the wins and the losses', (tester) async {
+      await tester.pumpWidget(
+        overlay(
+          record: (
+            level: AiLevel.normal,
+            record: (played: 18, wins: 13, losses: 5),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text('NORMAL'), findsOneWidget);
+      expect(find.text('13'), findsOneWidget);
+      expect(find.text('5'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  });
+
+  // The paywall. HOST is the paid half of a local game and JOIN is free, so
+  // these two check the gate itself rather than how it looks: that an unpaid
+  // device cannot reach the lobby by hosting, and that a paid one is not asked
+  // again. If the check in `_localGame` is ever dropped, hosting silently
+  // becomes free and one of these fails.
+  Future<void> pumpMenuWithStore(
+    WidgetTester tester, {
+    required bool owned,
+  }) async {
+    SharedPreferences.setMockInitialValues(
+      owned ? {'host_game_owned': true} : {},
+    );
+    // Same reason as in purchase_service_test: constructing the service reads
+    // InAppPurchase.instance, which registers a real platform for anything but
+    // this target.
+    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+    PurchaseService.instance = PurchaseService.fresh();
+    debugDefaultTargetPlatformOverride = null;
+    InAppPurchasePlatform.instance = _SilentStore();
+    await PurchaseService.instance.init();
+
+    await tester.pumpWidget(app(const MenuScreen()));
+    await tester.pump();
+    await tester.tap(find.text('LOCAL GAME'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.tap(find.text('HOST'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+  }
+
+  // Run at both sizes because three buttons and a paragraph make this the
+  // tallest dialog in the app, and the SE is the screen it would overflow on.
+  for (final (label, s) in [('iPhone 14', size), ('iPhone SE', seSize)]) {
+    testWidgets('hosting without the unlock stops at the paywall — $label', (
+      tester,
+    ) async {
+      tester.view.physicalSize = s;
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await pumpMenuWithStore(tester, owned: false);
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('HOST A GAME'), findsOneWidget);
+      expect(find.text('RESTORE'), findsOneWidget);
+      expect(find.text('NOT NOW'), findsOneWidget);
+      expect(
+        find.byType(LobbyScreen),
+        findsNothing,
+        reason: 'an unpaid device reached the lobby by hosting',
+      );
+    });
+  }
+
+  testWidgets('NOT NOW leaves the paywall without hosting', (tester) async {
+    tester.view.physicalSize = size;
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await pumpMenuWithStore(tester, owned: false);
+    await tester.tap(find.text('NOT NOW'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.text('HOST A GAME'), findsNothing);
+    expect(find.byType(MenuScreen), findsOneWidget);
+    expect(find.byType(LobbyScreen), findsNothing);
+  });
+
+  testWidgets('hosting with the unlock goes straight to the lobby', (
+    tester,
+  ) async {
+    tester.view.physicalSize = size;
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.reset);
+
+    await pumpMenuWithStore(tester, owned: true);
+
+    expect(find.text('HOST A GAME'), findsNothing);
+    expect(find.byType(LobbyScreen), findsOneWidget);
+  });
+}
+
+/// A store that is reachable but sells nothing, so the paywall renders without
+/// a price and no purchase can complete behind the test's back.
+class _SilentStore extends InAppPurchasePlatform {
+  @override
+  Stream<List<PurchaseDetails>> get purchaseStream => const Stream.empty();
+
+  @override
+  Future<bool> isAvailable() async => false;
 }

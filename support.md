@@ -40,6 +40,9 @@ Your record is tracked separately for each difficulty.
 Local multiplayer needs **three to five players**, each on their own device,
 all connected to the same WiFi network. A two-player game cannot be started.
 
+Hosting a game is a one-time purchase. Joining a game that someone else hosts
+is free, so only one person at the table needs to have bought it.
+
 1. One player chooses Host and is shown a join code.
 2. Everyone else chooses Join and types that code in.
 3. Once at least three players are in the lobby, the host starts the game.
@@ -58,6 +61,12 @@ lobby shows how many more are needed.
 for any app that talks to other devices over WiFi. Stardrops uses it only to
 reach the other players. If you declined it, you can turn it back on in
 Settings → Privacy & Security → Local Network. Solo play is unaffected.
+
+**"I already paid, and it is asking me to pay again."** Choose Local Game and
+then Host, and tap Restore on the unlock screen. That asks the store whether
+your account already owns the unlock and turns hosting back on. Be signed in
+with the same Apple ID or Google account you bought it with — the purchase
+belongs to the account, not to the phone.
 
 **"My name or my record disappeared."** These are stored on the device only,
 so uninstalling the app or resetting the phone clears them. They are not

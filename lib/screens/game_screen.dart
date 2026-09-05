@@ -84,6 +84,12 @@ class _GameScreenState extends State<GameScreen> {
   bool _resultRecorded =
       false; // guards against recording a game's result twice
 
+  /// The lifetime record at the difficulty just played, read back once the
+  /// finished game has been counted into it. Null over the network, where
+  /// there is no difficulty to file a result under, and null until the read
+  /// returns — the overlay shows the line only with a real number behind it.
+  ({AiLevel level, LevelRecord record})? _record;
+
   // The host can drop out more than once as the socket unwinds; the dialog
   // announcing it should only ever appear once.
   bool _hostLostShown = false;
@@ -150,13 +156,7 @@ class _GameScreenState extends State<GameScreen> {
     _net?.catchUp();
     if (_gs.gameOver && !_resultRecorded) {
       _resultRecorded = true;
-      // Fire-and-forget: it logs its own failures, and nothing on this screen
-      // shows the running total. The count keeps accruing for the menu.
-      StatsService.recordResult(
-        playerWon: _gs.localWon,
-        // Networked seats are people, so there's no difficulty to file under.
-        level: _isNet ? null : widget.aiLevel,
-      );
+      _recordResult();
     }
     // Hold new animations while the menu is open — an overlay entry inserted
     // now would be added above the dialog route and draw on top of it.
@@ -268,7 +268,28 @@ class _GameScreenState extends State<GameScreen> {
   /// dealt. Shared by solo PLAY AGAIN and a redeal arriving from the host.
   void _onRedeal() {
     if (!mounted) return;
-    setState(() => _resultRecorded = false);
+    setState(() {
+      _resultRecorded = false;
+      _record = null;
+    });
+  }
+
+  /// Counts the finished game, then reads the record back so the results
+  /// overlay can show a total that already includes it — a counter the player
+  /// never sees move is no reason to play again.
+  ///
+  /// Both halves can fail; [StatsService] logs and swallows, and this leaves
+  /// the line hidden rather than showing a count that might be wrong.
+  Future<void> _recordResult() async {
+    // Networked seats are people, so there's no difficulty to file the game
+    // under and no per-level record to show afterwards.
+    final level = _isNet ? null : widget.aiLevel;
+    await StatsService.recordResult(playerWon: _gs.localWon, level: level);
+    if (level == null || !mounted) return;
+
+    final record = (await StatsService.read())?.byLevel[level];
+    if (record == null || !mounted) return;
+    setState(() => _record = (level: level, record: record));
   }
 
   /// Host side: somebody's phone went away. The game carries on — the host
@@ -563,6 +584,7 @@ class _GameScreenState extends State<GameScreen> {
                 localWon: _gs.localWon,
                 isTie: _gs.isTie,
                 localSeat: _gs.localSeat,
+                record: _record,
                 onPlayAgain: _playAgain,
                 onMenu: _leaveToMenu,
               ),

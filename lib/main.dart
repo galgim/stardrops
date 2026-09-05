@@ -6,6 +6,7 @@ import 'screens/intro_screen.dart';
 import 'screens/menu_screen.dart';
 import 'services/locale_service.dart';
 import 'services/onboarding_service.dart';
+import 'services/purchase_service.dart';
 import 'services/sfx.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_text.dart';
@@ -30,6 +31,11 @@ Future<void> main() async {
   // so this can't meaningfully delay or break startup. Doing it here means the
   // first button tap on the menu is already audible.
   await Sfx.init();
+
+  // Before the first frame so the menu knows whether hosting is unlocked
+  // without a flash of the paywall. Only the cached entitlement is awaited;
+  // the store is consulted in the background and can take as long as it likes.
+  await PurchaseService.instance.init();
 
   runApp(StardropApp(showIntro: !seenIntro));
 }

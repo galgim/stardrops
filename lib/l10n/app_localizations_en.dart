@@ -168,6 +168,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinBadCode => 'That code doesn\'t look right.';
 
   @override
+  String get purchaseTitle => 'HOST A GAME';
+
+  @override
+  String get purchaseBody =>
+      'Hosting is a one-time unlock. Joining a game someone else hosts is always free.';
+
+  @override
+  String get purchaseBuy => 'UNLOCK';
+
+  @override
+  String purchaseBuyAt(String price) {
+    return 'UNLOCK $price';
+  }
+
+  @override
+  String get purchaseRestore => 'RESTORE';
+
+  @override
+  String get purchaseNotNow => 'NOT NOW';
+
+  @override
+  String get purchaseStoreUnavailable => 'Can\'t reach the store right now.';
+
+  @override
+  String get purchaseUnavailable => 'This unlock isn\'t available right now.';
+
+  @override
+  String get purchaseFailed =>
+      'That didn\'t go through. You haven\'t been charged.';
+
+  @override
+  String get purchaseNothingToRestore => 'Nothing to restore on this account.';
+
+  @override
   String get lobbyJoining => 'JOINING';
 
   @override

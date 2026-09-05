@@ -168,6 +168,42 @@ class AppLocalizationsEs extends AppLocalizations {
   String get joinBadCode => 'Ese código no parece correcto.';
 
   @override
+  String get purchaseTitle => 'CREAR PARTIDA';
+
+  @override
+  String get purchaseBody =>
+      'Crear partidas se desbloquea una sola vez. Unirse a la partida de otra persona siempre es gratis.';
+
+  @override
+  String get purchaseBuy => 'DESBLOQUEAR';
+
+  @override
+  String purchaseBuyAt(String price) {
+    return 'DESBLOQUEAR $price';
+  }
+
+  @override
+  String get purchaseRestore => 'RESTAURAR';
+
+  @override
+  String get purchaseNotNow => 'AHORA NO';
+
+  @override
+  String get purchaseStoreUnavailable =>
+      'No se puede conectar con la tienda ahora mismo.';
+
+  @override
+  String get purchaseUnavailable =>
+      'Esta compra no está disponible ahora mismo.';
+
+  @override
+  String get purchaseFailed => 'No se completó. No se te ha cobrado nada.';
+
+  @override
+  String get purchaseNothingToRestore =>
+      'No hay nada que restaurar en esta cuenta.';
+
+  @override
   String get lobbyJoining => 'UNIÉNDOSE';
 
   @override

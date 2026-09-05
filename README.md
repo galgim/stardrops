@@ -10,7 +10,8 @@ take instead. After ten rounds, fewest stars wins.
 Solo play is against four AI opponents at three difficulty levels. Local
 multiplayer seats three to five players over WiFi with no server involved —
 one device hosts and hands out a join code, and the others connect straight to
-it over TCP.
+it over TCP. Hosting is a one-time in-app purchase; joining a game someone
+else hosts is free.
 
 ## Running it
 
@@ -37,7 +38,7 @@ lib/
   models/     cards, rows, players
   net/        LAN hosting, join codes, the networked game loop
   screens/    menu, lobby, game, tutorial
-  services/   on-device persistence, sound, locale
+  services/   on-device persistence, sound, locale, the hosting purchase
   theme/      colour, type, spacing tokens
   l10n/       .arb translation sources
 ```

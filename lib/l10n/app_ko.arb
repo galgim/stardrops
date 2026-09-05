@@ -57,6 +57,17 @@
   "joinEnterCode": "코드를 입력하세요",
   "joinBadCode": "코드가 올바르지 않습니다.",
 
+  "purchaseTitle": "방 만들기",
+  "purchaseBody": "방 만들기는 한 번만 결제하면 계속 사용할 수 있습니다. 다른 사람의 방에 참가하는 것은 언제나 무료입니다.",
+  "purchaseBuy": "잠금 해제",
+  "purchaseBuyAt": "{price} 잠금 해제",
+  "purchaseRestore": "구매 복원",
+  "purchaseNotNow": "나중에",
+  "purchaseStoreUnavailable": "지금은 스토어에 연결할 수 없습니다.",
+  "purchaseUnavailable": "지금은 구매할 수 없습니다.",
+  "purchaseFailed": "결제가 완료되지 않았습니다. 요금은 청구되지 않았습니다.",
+  "purchaseNothingToRestore": "이 계정에는 복원할 구매 내역이 없습니다.",
+
   "lobbyJoining": "참가 중",
   "lobbyOpening": "방을 여는 중…",
   "lobbyConnecting": "연결 중…",

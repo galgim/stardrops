@@ -178,4 +178,26 @@ void main() {
     await tester.pump(const Duration(milliseconds: 600));
     await binding.takeScreenshot('06-menu');
   });
+
+  // Not a store listing shot. App Store Connect requires a screenshot of the
+  // in-app purchase for review, and this is it — reviewer-only, never shown to
+  // players, so it needs no framing.
+  //
+  // The UNLOCK button carries a price only when a real store answers: on a bare
+  // simulator there is none, and the button falls back to its plain label. Run
+  // this against a StoreKit configuration or a sandbox account if the price
+  // needs to be in the picture.
+  testWidgets('07 host unlock', (tester) async {
+    await binding.convertFlutterSurfaceToImage();
+    await pump(tester, const MenuScreen());
+    await tester.tap(find.text('LOCAL GAME'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.tap(find.text('HOST'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    // Same pointer-crosshair fade as in '03 difficulty'.
+    await tester.pump(const Duration(milliseconds: 900));
+    await binding.takeScreenshot('07-host-unlock');
+  });
 }
